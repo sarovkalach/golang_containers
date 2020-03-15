@@ -11,13 +11,13 @@ type ListInterface interface {
 	Clear()
 	Count() int
 	Elems() []interface{}
-	Pop() (interface{}, bool)
+	Find(x interface{}) int
 	Insert(int, interface{})
 	Load(int) interface{}
+	Pop() (interface{}, bool)
 	Remove(x interface{}) bool
 	Sort()
 	Store(int, interface{})
-	Find(x interface{}) int
 }
 
 func NewList(size int) ListInterface {

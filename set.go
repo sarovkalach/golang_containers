@@ -13,7 +13,7 @@ type SetInterface interface {
 	Union(s1 SetInterface) []interface{}
 }
 
-func newSet(size int) SetInterface {
+func NewSet(size int) *Set {
 	return &Set{
 		data: make(map[interface{}]struct{}, size),
 	}
@@ -38,16 +38,24 @@ func (s *Set) Count() int {
 }
 
 func (s *Set) Difference(s1 SetInterface) []interface{} {
-	diff := make([]interface{}, 0, len(s.data)/2)
-	data := s.Elems()
+	difference := make([]interface{}, 0, len(s.Elems())/2)
+	allKeys := make(map[interface{}]struct{})
 
-	for _, k := range data {
-		if !s1.Find(k) {
-			diff = append(diff, k)
+	for _, key := range s.Elems() {
+		allKeys[key] = struct{}{}
+	}
+
+	for _, key := range s1.Elems() {
+		allKeys[key] = struct{}{}
+	}
+
+	for key := range allKeys {
+		if s.Find(key) && !s1.Find(key) {
+			difference = append(difference, key)
 		}
 	}
 
-	return diff
+	return difference
 }
 
 func (s *Set) Elems() []interface{} {
@@ -61,17 +69,17 @@ func (s *Set) Elems() []interface{} {
 
 func (s *Set) Intersection(s1 SetInterface) []interface{} {
 	intersec := make([]interface{}, 0, len(s.Elems())/2)
-	allKeys := make([]interface{}, 0, len(s.Elems())+len(s1.Elems()))
+	allKeys := make(map[interface{}]struct{})
 
 	for _, key := range s.Elems() {
-		allKeys = append(allKeys, key)
+		allKeys[key] = struct{}{}
 	}
 
 	for _, key := range s1.Elems() {
-		allKeys = append(allKeys, key)
+		allKeys[key] = struct{}{}
 	}
 
-	for _, key := range allKeys {
+	for key := range allKeys {
 		if s.Find(key) && s1.Find(key) {
 			intersec = append(intersec, key)
 		}
@@ -90,6 +98,7 @@ func (s *Set) Pop() (interface{}, bool) {
 		key = k
 		break
 	}
+	delete(s.data, key)
 
 	return key, true
 }
@@ -105,17 +114,17 @@ func (s *Set) Remove(x interface{}) bool {
 
 func (s *Set) Union(s1 SetInterface) []interface{} {
 	union := make([]interface{}, 0, len(s.Elems())/2)
-	allKeys := make([]interface{}, 0, len(s.Elems())+len(s1.Elems()))
+	allKeys := make(map[interface{}]struct{})
 
 	for _, key := range s.Elems() {
-		allKeys = append(allKeys, key)
+		allKeys[key] = struct{}{}
 	}
 
 	for _, key := range s1.Elems() {
-		allKeys = append(allKeys, key)
+		allKeys[key] = struct{}{}
 	}
 
-	for _, key := range allKeys {
+	for key := range allKeys {
 		if s.Find(key) || s1.Find(key) {
 			union = append(union, key)
 		}

@@ -92,14 +92,12 @@ func TestRemove(t *testing.T) {
 	l.Append(2)
 	l.Append(3)
 
-	res := l.Remove(2)
-	if res != true {
-		t.Errorf("Error. Expected: %v, have: %v", true, res)
+	l.Remove(2)
+	expected := []interface{}{1, 3}
+	if reflect.DeepEqual(l.Elems(), expected) {
+		t.Errorf("Wrong result.Expected: %v, have %v", expected, l.Elems())
 	}
-	res = l.Remove(5)
-	if res != false {
-		t.Errorf("Error. Expected: %v, have: %v", false, res)
-	}
+
 }
 
 func TestSort(t *testing.T) {

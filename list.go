@@ -15,7 +15,7 @@ type ListInterface interface {
 	Insert(int, interface{})
 	Load(int) interface{}
 	Pop() (interface{}, bool)
-	Remove(x interface{}) bool
+	Remove(x ...interface{})
 	Sort()
 	Store(int, interface{})
 }
@@ -69,14 +69,15 @@ func (l *List) Load(index int) interface{} {
 	return l.data[index]
 }
 
-func (l *List) Remove(x interface{}) bool {
-	for i, elem := range l.data {
-		if elem == x {
-			l.data = append(l.data[:i], l.data[i+1:]...)
-			return true
+func (l *List) Remove(x ...interface{}) {
+	for val := range x {
+		for i, elem := range l.data {
+			if elem == val {
+				l.data = append(l.data[:i], l.data[i+1:]...)
+				break
+			}
 		}
 	}
-	return false
 }
 
 func (l *List) Sort() {

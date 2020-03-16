@@ -9,7 +9,7 @@ type SetInterface interface {
 	Find(x interface{}) bool
 	Intersection(s1 SetInterface) []interface{}
 	Pop() (interface{}, bool)
-	Remove(x interface{}) bool
+	Remove(x ...interface{})
 	Union(s1 SetInterface) []interface{}
 }
 
@@ -103,13 +103,10 @@ func (s *Set) Pop() (interface{}, bool) {
 	return key, true
 }
 
-func (s *Set) Remove(x interface{}) bool {
-	if _, ok := s.data[x]; !ok {
-		return false
+func (s *Set) Remove(x ...interface{}) {
+	for _, val := range x {
+		delete(s.data, val)
 	}
-	delete(s.data, x)
-
-	return true
 }
 
 func (s *Set) Union(s1 SetInterface) []interface{} {

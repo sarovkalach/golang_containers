@@ -1,6 +1,7 @@
 package containers
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 )
@@ -44,15 +45,16 @@ func TestCount(t *testing.T) {
 
 func TestPop(t *testing.T) {
 	l := NewList(1)
-	l.Append(1)
-	l.Pop()
-	testCase := []interface{}{}
+	l.Append(1, 2, 3)
+	l.Pop(1)
+	testCase := []interface{}{1, 3}
 
 	if !reflect.DeepEqual(l.Elems(), testCase) {
 		t.Errorf("Error. Expected: %v, have: %v", testCase, l.Elems())
 	}
-
-	_, ok := l.Pop()
+	l.Pop(0)
+	l.Pop(0)
+	_, ok := l.Pop(0)
 	if ok {
 		t.Errorf("Error. Expected: %v, have: %v", false, ok)
 	}
@@ -94,10 +96,10 @@ func TestRemove(t *testing.T) {
 
 	l.Remove(2)
 	expected := []interface{}{1, 3}
-	if reflect.DeepEqual(l.Elems(), expected) {
+	if !reflect.DeepEqual(l.Elems(), expected) {
 		t.Errorf("Wrong result.Expected: %v, have %v", expected, l.Elems())
 	}
-
+	fmt.Println(l.Elems())
 }
 
 func TestSort(t *testing.T) {

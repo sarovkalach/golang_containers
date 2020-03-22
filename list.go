@@ -14,7 +14,7 @@ type ListInterface interface {
 	Find(x interface{}) int
 	Insert(int, interface{})
 	Load(int) interface{}
-	Pop() (interface{}, bool)
+	Pop(pos int) (interface{}, bool)
 	Remove(x ...interface{})
 	Sort()
 	Store(int, interface{})
@@ -28,49 +28,57 @@ type List struct {
 	data []interface{}
 }
 
+// Append to the end
 func (l *List) Append(x ...interface{}) {
 	l.data = append(l.data, x...)
 }
 
+// Clear all elems
 func (l *List) Clear() {
 	l.data = make([]interface{}, 0)
 }
 
+// Count elements
 func (l *List) Count() int {
 	return len(l.data)
 }
 
+// Elems return data
 func (l *List) Elems() []interface{} {
 	return l.data
 }
 
-func (l *List) Pop() (interface{}, bool) {
+// Pop elem at index
+func (l *List) Pop(index int) (interface{}, bool) {
 	var (
 		ok   bool
 		elem interface{}
 	)
-	if l.Count()-1 < 0 {
+
+	if index > l.Count()-1 {
 		return nil, false
 	}
-
-	elem = l.data[l.Count()-1]
-	l.data = l.data[:l.Count()-1]
+	elem = l.data[index]
+	l.data = append(l.data[:index], l.data[index+1:]...)
 
 	return elem, ok
 }
 
+// Insert elem at index
 func (l *List) Insert(index int, x interface{}) {
 	p1 := l.data[:index-1]
 	p1 = append(l.data, x)
 	l.data = append(l.data[index:], p1...)
 }
 
+// Load elem at index
 func (l *List) Load(index int) interface{} {
 	return l.data[index]
 }
 
+// Remove elem by value
 func (l *List) Remove(x ...interface{}) {
-	for val := range x {
+	for _, val := range x {
 		for i, elem := range l.data {
 			if elem == val {
 				l.data = append(l.data[:i], l.data[i+1:]...)
@@ -80,6 +88,7 @@ func (l *List) Remove(x ...interface{}) {
 	}
 }
 
+// Sort elems
 func (l *List) Sort() {
 	if l.Count() == 0 {
 		fmt.Println("Nothing to sort")
@@ -120,10 +129,12 @@ func (l *List) Sort() {
 	}
 }
 
+// Store elem by index
 func (l *List) Store(index int, x interface{}) {
 	l.data[index] = x
 }
 
+// Find elem by value
 func (l *List) Find(x interface{}) int {
 	for i, elem := range l.data {
 		if elem == x {

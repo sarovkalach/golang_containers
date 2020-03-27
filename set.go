@@ -23,20 +23,24 @@ type Set struct {
 	data map[interface{}]struct{}
 }
 
+// Add element
 func (s *Set) Add(x ...interface{}) {
 	for _, v := range x {
 		s.data[v] = struct{}{}
 	}
 }
 
+// Clear all elems
 func (s *Set) Clear() {
 	s.data = make(map[interface{}]struct{}, 0)
 }
 
+// Count elems
 func (s *Set) Count() int {
 	return len(s.data)
 }
 
+// Difference between  s1
 func (s *Set) Difference(s1 SetInterface) []interface{} {
 	difference := make([]interface{}, 0, len(s.Elems())/2)
 	allKeys := make(map[interface{}]struct{})
@@ -58,6 +62,7 @@ func (s *Set) Difference(s1 SetInterface) []interface{} {
 	return difference
 }
 
+// Elems show data
 func (s *Set) Elems() []interface{} {
 	data := make([]interface{}, 0, len(s.data))
 	for key := range s.data {
@@ -67,6 +72,7 @@ func (s *Set) Elems() []interface{} {
 	return data
 }
 
+// Intersection with s1
 func (s *Set) Intersection(s1 SetInterface) []interface{} {
 	intersec := make([]interface{}, 0, len(s.Elems())/2)
 	allKeys := make(map[interface{}]struct{})
@@ -88,6 +94,7 @@ func (s *Set) Intersection(s1 SetInterface) []interface{} {
 	return intersec
 }
 
+// Pop random elem
 func (s *Set) Pop() (interface{}, bool) {
 	if len(s.data) == 0 {
 		return nil, false
@@ -103,12 +110,14 @@ func (s *Set) Pop() (interface{}, bool) {
 	return key, true
 }
 
+// Remove elem
 func (s *Set) Remove(x ...interface{}) {
 	for _, val := range x {
 		delete(s.data, val)
 	}
 }
 
+// Union with s1
 func (s *Set) Union(s1 SetInterface) []interface{} {
 	union := make([]interface{}, 0, len(s.Elems())/2)
 	allKeys := make(map[interface{}]struct{})
@@ -130,6 +139,7 @@ func (s *Set) Union(s1 SetInterface) []interface{} {
 	return union
 }
 
+// Find elem
 func (s *Set) Find(x interface{}) bool {
 	if _, ok := s.data[x]; !ok {
 		return false

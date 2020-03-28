@@ -66,6 +66,10 @@ func (l *List) Pop(index int) (interface{}, bool) {
 
 // Insert elem at index
 func (l *List) Insert(index int, x interface{}) {
+	if index < 0 || index >= l.Count() {
+		fmt.Println("Wrong index")
+		return
+	}
 	p1 := l.data[:index-1]
 	p1 = append(l.data, x)
 	l.data = append(l.data[index:], p1...)
@@ -73,6 +77,10 @@ func (l *List) Insert(index int, x interface{}) {
 
 // Load elem at index
 func (l *List) Load(index int) interface{} {
+	if index < 0 || index >= l.Count() {
+		fmt.Println("Wrong index")
+		return nil
+	}
 	return l.data[index]
 }
 
@@ -131,6 +139,10 @@ func (l *List) Sort() {
 
 // Store elem by index
 func (l *List) Store(index int, x interface{}) {
+	if index < 0 || index >= l.Count() {
+		fmt.Println("Wrong index")
+		return
+	}
 	l.data[index] = x
 }
 

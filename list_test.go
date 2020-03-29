@@ -63,15 +63,12 @@ func TestPop(t *testing.T) {
 
 func TestInsert(t *testing.T) {
 	l := NewList(1)
-	l.Append(1)
-	l.Append(2)
-	l.Append(3)
-	l.Insert(3, 4)
+	l.Append(1, 2, 3)
+	l.Insert(2, 4)
 
 	testCase := []interface{}{1, 2, 4, 3}
-	// l.Elems()
 	if !reflect.DeepEqual(l.Elems(), testCase) {
-		// t.Errorf("Error. Expected: %v, have: %v", testCase, l.Elems())
+		t.Errorf("Error. Expected: %v, have: %v", testCase, l.Elems())
 	}
 
 }

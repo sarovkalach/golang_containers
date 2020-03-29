@@ -12,12 +12,12 @@ type ListInterface interface {
 	Count() int
 	Elems() []interface{}
 	Find(x interface{}) int
-	Insert(int, interface{})
-	Load(int) interface{}
-	Pop(pos int) (interface{}, bool)
+	Insert(index int, x interface{})
+	Load(index int) interface{}
+	Pop(index int) (interface{}, bool)
 	Remove(x ...interface{})
 	Sort()
-	Store(int, interface{})
+	Store(index int, x interface{})
 }
 
 func NewList(size int) ListInterface {
@@ -70,9 +70,8 @@ func (l *List) Insert(index int, x interface{}) {
 		fmt.Println("Wrong index")
 		return
 	}
-	p1 := l.data[:index-1]
-	p1 = append(l.data, x)
-	l.data = append(l.data[index:], p1...)
+	newSlice := []interface{}{x}
+	l.data = append(l.data[:index], append(newSlice, l.data[index:]...)...)
 }
 
 // Load elem at index
